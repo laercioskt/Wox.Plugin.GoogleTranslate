@@ -1,12 +1,12 @@
 {
     "ID":"36112334-bfe1-11eb-8529-0242ac130003",
-    "ActionKeyword":"ç",
+    "ActionKeyword":"tr",
     "Name":"Wox GoogleTranslate Plugin",
     "Description":"Plugin to translate from-to any language",
     "Author":"laercioskt",
     "Version":"1.0",
     "Language":"python",
-    "Website":"https://github.com/Wox-launche/Wox",
+    "Website":"https://github.com/laercioskt/Wox.Plugin.GoogleTranslate.git",
     "IcoPath":"Images\\app.png",
     "ExecuteFileName":"main.py"
 }
