@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wox import Wox
+from wox import Wox, WoxAPI
 
 import textwrap
 import re
@@ -8,6 +8,11 @@ import html
 import urllib.request
 import urllib.parse
 
+try:
+    import pyperclip
+    flag_package = True
+except ImportError:
+    flag_package = False
 
 agent = {'User-Agent': "Mozilla/5.0 (Android 9; Mobile; rv:67.0.3) Gecko/67.0.3 Firefox/67.0.3"}
 
@@ -37,7 +42,7 @@ class WoxTranslator(Wox):
         if len(query.strip()) == 0:
             results.append({
                 "Title": "No input",
-                "SubTitle": "type: 'h en:pt an english sentence' to translate from english to portuguese",
+                "SubTitle": "type: 'ç en:pt an english sentence' to translate from english to portuguese",
                 "IcoPath": "Images/app.png",
                 "ContextData": "ctxData"
             })
@@ -54,14 +59,29 @@ class WoxTranslator(Wox):
                 from_language = 'en'
                 to_language = 'pt'
 
+            translation = translate(query, to_language, from_language, "80")
+
             results.append({
-                "Title": translate(query, to_language, from_language, "80"),
-                "SubTitle": query,
+                "Title": to_language + ": " + translation,
+                "SubTitle": from_language + ": " + query,
                 "IcoPath": "Images/app.png",
-                "ContextData": "ctxData"
+                "ContextData": "ctxData",
+                "JsonRPCAction": {
+                    "method": "copy",
+                    "parameters": [translation],
+                    "dontHideAfterAction": True,
+                }
             })
 
         return results
+
+    def copy(self, ans):
+        if flag_package:
+            pyperclip.copy(ans)
+            WoxAPI.show_msg("Copied to clipboard", ans)
+        else:
+            WoxAPI.change_query("install pyperclip (pip.exe install pyperclip) to copy")
+
 
 
 if __name__ == "__main__":
